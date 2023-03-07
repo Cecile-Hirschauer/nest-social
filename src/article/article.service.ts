@@ -55,14 +55,33 @@ export class ArticleService {
   async articlesPagination(
     args: ArticlesPaginationArgs,
   ): Promise<ArticlesPagination> {
-    const [nodes, totalCount] = await this.articleRepository.findAndCount({
-      skip: args.skip,
-      take: args.take,
-      order: {
-        createdAt:
-          args.sortBy?.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
-      },
-    });
+    const qb = this.articleRepository.createQueryBuilder('article');
+    qb.take(args.take);
+    qb.skip(args.skip);
+    if (args.sortBy) {
+      if (args.sortBy.createdAt !== null) {
+        qb.orderBy(
+          'article.createdAt',
+          args.sortBy.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
+        );
+      }
+      if (args.sortBy.title !== null) {
+        qb.addOrderBy(
+          'article.title',
+          args.sortBy.title === SortDirection.ASC ? 'ASC' : 'DESC',
+        );
+      }
+    }
+
+    const [nodes, totalCount] = await qb.getManyAndCount();
+    // const [nodes, totalCount] = await this.articleRepository.findAndCount({
+    //   skip: args.skip,
+    //   take: args.take,
+    //   order: {
+    //     createdAt:
+    //       args.sortBy?.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
+    //   },
+    // });
     return { nodes, totalCount };
   }
 }
