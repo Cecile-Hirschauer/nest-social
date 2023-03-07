@@ -1,0 +1,35 @@
+mutation createArticle {
+  articleCreate(input: {
+    title: "YouYou !!!",
+    description: "Une petite desciption du matin",
+    image: "https://images.unsplash.com/photo-1599889959407-598566c6e1f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTE4fHxjaGF0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+  }) {article {id, title, description}}
+} 
+
+mutation updateArticle {
+  articleUpdate(
+    articleId:  "e4aa5519-f478-46c8-8e86-15080a9d87dd",
+    input: {
+      title: "Hello World !",
+      description: "Je suis une desciption du matin",
+      image: "https://plus.unsplash.com/premium_photo-1671976322693-97b3056d69b7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTA5fHxjaGF0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+    }
+  ) {
+    article {id, title, description, image, createdAt, updatedAt}
+  }
+}
+
+query articlesList {
+  articlesPaginations(skip:0, take:2, sortBy:{createdAt: DESC}){
+    totalCount,
+    nodes {
+      id,
+      createdAt,
+      updatedAt,
+      title,
+      description,
+      image,
+    }
+  }
+}
+

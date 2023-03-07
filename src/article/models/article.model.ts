@@ -1,10 +1,10 @@
 import { Column, Entity } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { NodeModel } from '../../pagination/models/node.model';
+import { Node } from '../../pagination/models/node.model';
 
 @Entity('articles')
 @ObjectType()
-export class Article extends NodeModel {
+export class Article extends Node {
   @Field(() => String)
   @Column()
   title: string;

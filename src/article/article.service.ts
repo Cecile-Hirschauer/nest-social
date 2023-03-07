@@ -11,6 +11,11 @@ import {
   ArticleUpdateOutput,
 } from './dto/article-update.dto';
 import { ArticleDeleteOutput } from './dto/article-delete.dto';
+import {
+  ArticlesPagination,
+  ArticlesPaginationArgs,
+} from './dto/articles.pagination.dto';
+import { SortDirection } from '../pagination/dto/pagination.dto';
 
 @Injectable()
 export class ArticleService {
@@ -29,7 +34,9 @@ export class ArticleService {
     articleId: Article['id'],
     input: ArticleUpdateInput,
   ): Promise<ArticleUpdateOutput> {
-    const article = await this.articleRepository.findOneByOrFail({ id: articleId });
+    const article = await this.articleRepository.findOneByOrFail({
+      id: articleId,
+    });
     article.title = input.title;
     article.description = input.description;
     article.image = input.image;
@@ -38,12 +45,24 @@ export class ArticleService {
   }
 
   async deleteArticle(articleId: Article['id']): Promise<ArticleDeleteOutput> {
-    const article = await this.articleRepository.findOneByOrFail({ id: articleId });
+    const article = await this.articleRepository.findOneByOrFail({
+      id: articleId,
+    });
     await article.remove();
     return { articleId };
   }
 
-  async getArticlesList(): Promise<Article[]> {
-    return this.articleRepository.find();
+  async articlesPagination(
+    args: ArticlesPaginationArgs,
+  ): Promise<ArticlesPagination> {
+    const [nodes, totalCount] = await this.articleRepository.findAndCount({
+      skip: args.skip,
+      take: args.take,
+      order: {
+        createdAt:
+          args.sortBy?.createdAt === SortDirection.ASC ? 'ASC' : 'DESC',
+      },
+    });
+    return { nodes, totalCount };
   }
 }
