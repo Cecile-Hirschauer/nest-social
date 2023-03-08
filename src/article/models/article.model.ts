@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Node } from 'src/pagination/models/node.model';
 import { User } from 'src/user/models/user.model';
 import {
@@ -38,5 +38,5 @@ export class Article extends Node {
   comments: Comment;
 
   @RelationId((self: Article) => self.comments)
-  readonly commmentId: Comment['id'];
+  readonly commentId: Comment['id'];
 }
