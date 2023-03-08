@@ -8,7 +8,7 @@ export class ArticleQueriesResolver {
   constructor(private readonly articleService: ArticleService) {}
 
   @Query(() => ArticlesPagination)
-  async articlesPaginations(@Args() args: ArticlesPaginationArgs){
+  async articlesPagination(@Args() args: ArticlesPaginationArgs){
     return this.articleService.articlesPagination(args);
   }
 }

@@ -6,9 +6,10 @@ import { ArticleMutationsResolver } from './resolvers/article.mutations.resolver
 import { ArticleQueriesResolver } from './resolvers/article.queries.resolver';
 import { ArticleFieldsResolver } from './resolvers/article.fields.resolver';
 import { UserModule } from '../user/user.module';
+import { Comment } from '../comment/models/comment.model';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Article]), UserModule],
+  imports: [TypeOrmModule.forFeature([Article, Comment]), UserModule],
   providers: [
     ArticleService,
     ArticleMutationsResolver,

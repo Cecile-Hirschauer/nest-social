@@ -38,6 +38,16 @@ type Article {
   description: String!
   image: String!
   author: User
+  comments(skip: Int!, take: Int!, sortBy: PaginationSortBy): ArticleCommentsPagination!
+}
+
+input PaginationSortBy {
+  createdAt: SortDirection
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }
 
 type ArticleCreateOutput {
@@ -57,6 +67,11 @@ type ArticlesPagination {
   nodes: [Article!]!
 }
 
+type ArticleCommentsPagination {
+  totalCount: Float!
+  nodes: [Comment!]!
+}
+
 type UserCreateOutput {
   user: User!
 }
@@ -71,17 +86,12 @@ type CommentCreateOutput {
 
 type Query {
   sayHello: String!
-  articlesPaginations(skip: Int!, take: Int!, sortBy: ArticlesPaginationSortBy): ArticlesPagination!
+  articlesPagination(skip: Int!, take: Int!, sortBy: ArticlesPaginationSortBy): ArticlesPagination!
 }
 
 input ArticlesPaginationSortBy {
   createdAt: SortDirection
   title: SortDirection
-}
-
-enum SortDirection {
-  ASC
-  DESC
 }
 
 type Mutation {

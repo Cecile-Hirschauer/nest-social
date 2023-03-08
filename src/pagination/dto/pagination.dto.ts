@@ -20,7 +20,7 @@ registerEnumType(SortDirection, {
 @InputType()
 export class PaginationSortBy {
   @Field(() => SortDirection, { nullable: true })
-  createdAt: SortDirection;
+  createdAt?: SortDirection;
 }
 
 @ArgsType()
@@ -30,6 +30,9 @@ export class PaginationArgs {
 
   @Field(() => Int)
   take: number;
+
+  @Field(() => PaginationSortBy, { nullable: true })
+  sortBy?: PaginationSortBy;
 }
 
 @InterfaceType()
