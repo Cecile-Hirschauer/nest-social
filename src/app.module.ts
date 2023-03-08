@@ -8,6 +8,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { ArticleModule } from './article/article.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { ArticleModule } from './article/article.module';
       }),
     }),
     ArticleModule,
+    AuthModule,
+    UserModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

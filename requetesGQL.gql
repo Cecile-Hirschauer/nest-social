@@ -1,3 +1,4 @@
+# Write your query or mutation here
 mutation createArticle {
   articleCreate(input: {
     title: "YouYou !!!",
@@ -19,6 +20,16 @@ mutation updateArticle {
   }
 }
 
+mutation deleteArticle {
+  articleDelete(
+    articleId: "e4aa5519-f478-46c8-8e86-15080a9d87dd"
+  ) {articleId}
+}
+
+query allArticles {articlesPaginations(skip:0, take:5)
+{totalCount,
+nodes{id, createdAt, updatedAt, title, description, image}}}
+
 query articlesList {
   articlesPaginations(skip:0, take:2, sortBy:{createdAt: DESC}){
     totalCount,
@@ -32,4 +43,33 @@ query articlesList {
     }
   }
 }
+
+mutation userCreate($input: UserCreateInput!){
+  userCreate(input: $input) {
+    user {
+      id,
+      firstName,
+      lastName,
+      email,
+      avatar, 
+      createdAt,
+    }
+  }
+}
+{"input": {
+  "firstName": "Moi",
+  "lastName": "Remoi",
+  "email": "moi@mail.com"
+  "password": "1234"
+  }
+}
+
+mutation login {
+  authLogin(username: "cecile@mail.fr", password: "verysecret")
+  {
+    accessToken, 
+  }
+}
+{"input": 
+{"email": "cecile@mail.fr", "password": "verysecret", "firstName": "cecile", "lastName": "moi"}}
 

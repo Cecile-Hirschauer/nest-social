@@ -16,6 +16,8 @@ import {
   ArticlesPaginationArgs,
 } from './dto/articles.pagination.dto';
 import { SortDirection } from '../pagination/dto/pagination.dto';
+import { JWTPayload } from '../auth/auth.service';
+import { User } from '../user/models/user.model';
 
 @Injectable()
 export class ArticleService {
@@ -24,9 +26,14 @@ export class ArticleService {
     private readonly articleRepository: Repository<Article>,
   ) {}
 
-  async createArticle(input: ArticleCreateInput): Promise<ArticleCreateOutput> {
-    const newArticle = this.articleRepository.create(input);
-    const article = await this.articleRepository.save(newArticle);
+  async createArticle(
+    user: JWTPayload,
+    input: ArticleCreateInput,
+  ): Promise<ArticleCreateOutput> {
+    const article = this.articleRepository.create(input);
+    article.author = new User();
+    article.author.id = user.id;
+    await article.save();
     return { article };
   }
 
@@ -51,6 +58,11 @@ export class ArticleService {
     await article.remove();
     return { articleId };
   }
+
+  async articleGetById(articleId: Article['id']): Promise<Article> {
+    return this.articleRepository.findOneByOrFail({ id: articleId });
+  }
+
 
   async articlesPagination(
     args: ArticlesPaginationArgs,
